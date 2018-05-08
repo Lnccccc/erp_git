@@ -74,12 +74,13 @@
                 <td>{{ keyword.rank }}</td>
                 <td>{{ keyword.updatatime | date:"Y-m-d" }}</td>
             </tr>
-
+            {% endfor %}
         </tbody>
 
     </table>
-    <p class="text-info">想查看更多商品关键词数据，欢迎关注微信公众号：微分析，购买我们的【店铺监控】工具</p>
-    {% endfor %}
+    {% if results %}
+        <p class="text-info">想查看更多商品关键词数据，欢迎关注微信公众号：微分析，购买我们的【店铺监控】工具</p>
+    {% endif %}
     <br>
     <p class="text-warning text-center">{{ wrong_url }}</p>
     <p class="text-info text-center">{{ no_result }}</p>
