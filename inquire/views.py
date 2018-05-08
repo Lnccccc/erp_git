@@ -22,7 +22,7 @@ def Getdata(request):
         e = b.index('/'or'_')  # 获取第一个/的位置
         urlId = b[d + 1:e][::-1]  # b1就是唯一标识的ID
         return str(urlId)
-    noResult = '您所查询的行业数据尚未开放，想查看更多商品关键词数据，欢迎关注微信公众号：微分析，后联系客服QQ:3325993794'
+    noResult = '您所查询的行业数据尚未开放，想查看更多商品关键词数据，欢迎关注微信公众号：微分析，联系客服QQ:3325993794，官方q群：538014809'
     latest_results = []
     date_results = []
     keyword_results = []
@@ -47,7 +47,7 @@ def Getdata(request):
     for i in latest_results:
         if i.keyword not in keyword_results:
             keyword_results.append(i)
-            
+
     #for i in results:
         #if i.updatatime.strftime("%y-%m-%d") == date_results[-1]:
             #latest_results.append(i)
