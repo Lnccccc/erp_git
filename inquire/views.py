@@ -40,11 +40,14 @@ def Getdata(request):
     for i in results:
         if i.updatatime.strftime("%y-%m-%d") not in date_results:
             date_results.append(i.updatatime.strftime("%y-%m-%d"))
+    for i in results:
+        if i.updatatime.strftime("%y-%m-%d") == date_results[0]:
+            latest_results.append(i)
     #for i in results:
         #if i.updatatime.strftime("%y-%m-%d") == date_results[-1]:
             #latest_results.append(i)
     if results:
-        return render(request, 'detail.html', context={'results': results,"date_results":date_results})
+        return render(request, 'detail.html', context={'results': latest_results,"date_results":date_results})
     else:
         return render(request, 'detail.html', context={'no_result': noResult})
 
