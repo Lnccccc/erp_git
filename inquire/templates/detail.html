@@ -7,53 +7,80 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+<style>
+    body{
+        text-align:center;
+    }
+</style>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="#">Weanaly</a>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">商品流量词入口查询</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'inquire:index' %}">关键词流量入口查询<span class="sr-only">(current)</span></a>
-            </li>
-
-
-        </ul>
-        <form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'inquire:Getdata' %}">
+        <form class="form-inline my-2 ml-sm-5 my-lg-0" method="POST" action="{% url 'inquire:Getdata' %}">
             {% csrf_token %}
-            <input class="form-control mr-sm-2" name="id" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control mr-sm-2" name="id" type="text" placeholder="输入速卖通商品链接" aria-label="Search" style="width:700px">
+            <button class="btn btn-outline-success mx-2 my-sm-0" type="submit">Search</button>
+
         </form>
+
     </div>
 </nav>
 
 <div role="main" class="container">
-
-
-    <h1>Bootstrap starter template</h1>
-    <div>
-        <br>
-    </div>
-    <div class="row">
-        <div class="col-2">产品ID</div>
-        <div class="col-3">关键词</div>
-        <div class="col-2">出现页数</div>
-        <div class="col-2">出现位置</div>
-    </div>
-    {{ no_result }}
-    {% for keyword in results %}
-        <div class="row">
-            <div class="col-3">{{ keyword.urlid }}</div>
-            <div class="col-3">{{ keyword.keyword }}</div>
-            <div class="col-3">{{ keyword.page }}</div>
-            <div class="col-3">{{ keyword.rank }}</div>
+    <div class="row my-2">
+        <div class="col-md-2">
+            <img src="https://{{ results.0.picsrc }}" alt="" class="img-thumbnail" width="120" height="120">
         </div>
-    {% endfor %}
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-10">
+                    <a href="https://www.aliexpress.com/wholesale?initiative_id=SB_20180412174003&site=glo&g=y&SearchText={{ results.0.urlid }}" title="{{ results.0.title }}" target="view_window"><p style="text-align:left">{{ results.0.title }}</p></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {% if results.0.price %}
+                    <p style="text-align:left">Price: {{ results.0.price }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% if results %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>产品ID</th>
+            <th>关键词</th>
+            <th>出现页数</th>
+            <th>出现位置</th>
+            <th>更新时间</th>
+        </tr>
+        </thead>
+        {% endif %}
+        <tbody>
+        {% for keyword in results %}
+            <tr>
+                <td>{{ keyword.urlid }}</td>
+                <td>{{ keyword.keyword }}</td>
+                <td>{{ keyword.page }}</td>
+                <td>{{ keyword.rank }}</td>
+                <td>{{ keyword.updatatime | date:"Y-m-d" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <p class="text-warning text-center">{{ wrong_url }}</p>
+    <p class="text-info text-center">{{ no_result }}</p>
+
 
 </div><!-- /.container -->
 
@@ -69,5 +96,6 @@
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
 </body>
 </html>

@@ -76,8 +76,17 @@ WSGI_APPLICATION = 'Keyword.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'keyword_db.db'),
+        'ENGINE': 'django.db.backends.mysql',
+        #'NAME': os.path.join(BASE_DIR, 'keyword_db_test.db'),
+        'NAME':'keyword',
+        'USER':'root',
+        'PASSWORD':'pjq_XXX_1022',
+        'HOST':'gz-cdb-3p82wwqf.sql.tencentcdb.com',
+        'PORT':'62982',
+        'OPTIONS':{
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+
+        }
     }
 }
 

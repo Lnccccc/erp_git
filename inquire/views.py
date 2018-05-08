@@ -1,16 +1,17 @@
 from django.shortcuts import render,get_object_or_404
 from django.views.decorators.clickjacking import xframe_options_exempt
-
-from .models import Keyword
+from datetime import date
+import time
+from .models import keyword3
 from django.http  import HttpResponse
 import re
 from django.utils import timezone
-from datetime import date
+import datetime
 # Create your views here.
 
 @xframe_options_exempt
 def Index(request):
-    return render(request,'index.html')
+    return render(request,'detail.html')
 
 @xframe_options_exempt
 def Getdata(request):
@@ -21,18 +22,26 @@ def Getdata(request):
         e = b.index('/'or'_')  # 获取第一个/的位置
         urlId = b[d + 1:e][::-1]  # b1就是唯一标识的ID
         return str(urlId)
-    noResult = 'NO RESULT'
-
+    noResult = '想查看更多商品关键词数据，欢迎关注微信公众号：微分析，购买我们的【店铺监控】工具'
+    latest_results = []
     date_results = []
-    for i in Keyword.objects.all():
-        date_results.append(i.time2)
-    date_results = list(set(date_results))
-    #results = get_object_or_404(Keyword.objects.filter(urlid='32808058805'))
-    urlid = get_urlid(str(request.POST['id']))
-    results = Keyword.objects.filter(urlid=urlid)
+    for i in keyword3.objects.all():
+        if i.updatatime.strftime("%y-%m-%d") not in date_results:
+            date_results.append(i.updatatime.strftime("%y-%m-%d"))
 
-    if results:
-        return render(request, 'detail.html', context={'results': results,"date_results":date_results})
+    #results = get_object_or_404(Keyword.objects.filter(urlid='32808058805'))
+    post_id = str(request.POST['id'])
+    try:
+        urlid = get_urlid(post_id)
+    except:
+        wrong_url = '您输入的商品链接有误，请输入正确的速卖通商品链接'
+        return render(request,'detail.html',context={'wrong_url':wrong_url})
+    results = keyword3.objects.filter(urlid=urlid).order_by('keyword')
+    for i in results:
+        if i.updatatime.strftime("%y-%m-%d") == date_results[-1]:
+            latest_results.append(i)
+    if latest_results:
+        return render(request, 'detail.html', context={'results': latest_results,"date_results":date_results})
     else:
         return render(request, 'detail.html', context={'no_result': noResult})
 
