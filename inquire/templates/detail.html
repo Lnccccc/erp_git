@@ -46,7 +46,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <p style="text-align:left">Price: {{ results.0.price }}</p>
+                    <p style="text-align:left">目前价格: {{ results.0.price }}</p>
                     {% endif %}
                 </div>
             </div>
@@ -79,6 +79,7 @@
 
     </table>
     {% if results %}
+        <p class="text-muted">免费版仅显示前五页共10条排名信息</p>
         <p class="text-info">想查看更多商品关键词数据，欢迎关注微信公众号：微分析，购买我们的【店铺监控】工具</p>
     {% endif %}
     <br>
