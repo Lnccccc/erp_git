@@ -25,9 +25,9 @@ def Getdata(request):
     noResult = '想查看更多商品关键词数据，欢迎关注微信公众号：微分析，购买我们的【店铺监控】工具'
     latest_results = []
     date_results = []
-    for i in keyword3.objects.all():
-        if i.updatatime.strftime("%y-%m-%d") not in date_results:
-            date_results.append(i.updatatime.strftime("%y-%m-%d"))
+    #for i in keyword3.objects.all():
+        #if i.updatatime.strftime("%y-%m-%d") not in date_results:
+            #date_results.append(i.updatatime.strftime("%y-%m-%d"))
 
     #results = get_object_or_404(Keyword.objects.filter(urlid='32808058805'))
     post_id = str(request.POST['id'])
@@ -36,12 +36,15 @@ def Getdata(request):
     except:
         wrong_url = '您输入的商品链接有误，请输入正确的速卖通商品链接'
         return render(request,'detail.html',context={'wrong_url':wrong_url})
-    results = keyword3.objects.filter(urlid=urlid).order_by('keyword')[:10]
+    results = keyword3.objects.filter(urlid=urlid).order_by('-updatatime')[:10]
     for i in results:
-        if i.updatatime.strftime("%y-%m-%d") == date_results[-1]:
-            latest_results.append(i)
-    if latest_results:
-        return render(request, 'detail.html', context={'results': latest_results,"date_results":date_results})
+        if i.updatatime.strftime("%y-%m-%d") not in date_results:
+            date_results.append(i.updatatime.strftime("%y-%m-%d"))
+    #for i in results:
+        #if i.updatatime.strftime("%y-%m-%d") == date_results[-1]:
+            #latest_results.append(i)
+    if results:
+        return render(request, 'detail.html', context={'results': results,"date_results":date_results})
     else:
         return render(request, 'detail.html', context={'no_result': noResult})
 
