@@ -22,9 +22,10 @@ def Getdata(request):
         e = b.index('/'or'_')  # 获取第一个/的位置
         urlId = b[d + 1:e][::-1]  # b1就是唯一标识的ID
         return str(urlId)
-    noResult = '想查看更多商品关键词数据，欢迎关注微信公众号：微分析，购买我们的【店铺监控】工具'
+    noResult = '您所查询的行业数据尚未开放，想查看更多商品关键词数据，欢迎关注微信公众号：微分析，后联系客服QQ:3325993794'
     latest_results = []
     date_results = []
+    keyword_results = []
     #for i in keyword3.objects.all():
         #if i.updatatime.strftime("%y-%m-%d") not in date_results:
             #date_results.append(i.updatatime.strftime("%y-%m-%d"))
@@ -36,13 +37,17 @@ def Getdata(request):
     except:
         wrong_url = '您输入的商品链接有误，请输入正确的速卖通商品链接'
         return render(request,'detail.html',context={'wrong_url':wrong_url})
-    results = keyword3.objects.filter(urlid=urlid).order_by('-updatatime')[:10]
+    results = keyword3.objects.filter(urlid=urlid).order_by('-updatatime')
     for i in results:
         if i.updatatime.strftime("%y-%m-%d") not in date_results:
             date_results.append(i.updatatime.strftime("%y-%m-%d"))
     for i in results:
         if i.updatatime.strftime("%y-%m-%d") == date_results[0]:
             latest_results.append(i)
+    for i in latest_results:
+        if i.keyword not in keyword_results:
+            keyword_results.append(i)
+            
     #for i in results:
         #if i.updatatime.strftime("%y-%m-%d") == date_results[-1]:
             #latest_results.append(i)

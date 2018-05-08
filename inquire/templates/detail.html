@@ -24,7 +24,7 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <form class="form-inline my-2 ml-sm-5 my-lg-0" method="POST" action="{% url 'inquire:Getdata' %}">
             {% csrf_token %}
-            <input class="form-control mr-sm-2" name="id" type="text" placeholder="输入速卖通商品链接" aria-label="Search" style="width:700px">
+            <input class="form-control mr-sm-2" name="id" type="text" placeholder="输入一个速卖通商品链接试试 ^_^ " aria-label="Search" style="width:700px">
             <button class="btn btn-outline-success mx-2 my-sm-0" type="submit">Search</button>
 
         </form>
@@ -32,6 +32,12 @@
     </div>
 </nav>
 <br>
+{% if not results %}
+<div class="alert alert-primary" role="alert">
+  <p>您正在使用的是免费版的速卖通商品流量词入口查询系统，仅开放了女装、手机配件、流行珠宝等二级类目，欢迎速卖通卖家使用</p>
+    <p>关注我们的公众号：微分析，更多行业数据分析报告持续分析</p>
+</div>
+{% endif %}
 <div role="main" class="container">
     <div class="row my-2">
         <div class="col-md-2">
@@ -84,7 +90,7 @@
     {% endif %}
     <br>
     <p class="text-warning text-center">{{ wrong_url }}</p>
-    <p class="text-info text-center">{{ no_result }}</p>
+    <p class="text-danger text-center">{{ no_result }}</p>
 
 
 </div><!-- /.container -->
