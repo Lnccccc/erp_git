@@ -22,20 +22,24 @@ def Getdata(request):
         e = b.index('/'or'_')  # 获取第一个/的位置
         urlId = b[d + 1:e][::-1]  # b1就是唯一标识的ID
         return str(urlId)
-    noResult = '您所查询的行业数据尚未开放，想查看更多商品关键词数据，欢迎关注微信公众号：微分析，联系客服QQ:3325993794，官方q群：538014809'
+    noResult = '您所查询的数据尚未开放，想查看更多商品关键词数据，欢迎关注微信公众号：微分析，联系客服QQ:3325993794，官方q群：538014809'
     latest_results = []
     date_results = []
     keyword_results = []
+    wrong_url = '您输入的商品链接有误，请输入正确的速卖通商品链接'
+
     #for i in keyword3.objects.all():
         #if i.updatatime.strftime("%y-%m-%d") not in date_results:
             #date_results.append(i.updatatime.strftime("%y-%m-%d"))
 
     #results = get_object_or_404(Keyword.objects.filter(urlid='32808058805'))
-    post_id = str(request.POST['id'])
+    try:
+        post_id = str(request.POST['id'])
+    except:
+        return render(request,'detail.html')
     try:
         urlid = get_urlid(post_id)
     except:
-        wrong_url = '您输入的商品链接有误，请输入正确的速卖通商品链接'
         return render(request,'detail.html',context={'wrong_url':wrong_url})
     results = keyword3.objects.filter(urlid=urlid).order_by('-keyword')[:10]
     for i in results:
