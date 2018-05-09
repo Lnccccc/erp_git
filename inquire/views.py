@@ -37,7 +37,7 @@ def Getdata(request):
     except:
         wrong_url = '您输入的商品链接有误，请输入正确的速卖通商品链接'
         return render(request,'detail.html',context={'wrong_url':wrong_url})
-    results = keyword3.objects.filter(urlid=urlid).order_by('-keyword')
+    results = keyword3.objects.filter(urlid=urlid).order_by('-keyword')[:10]
     for i in results:
         if i.updatatime.strftime("%y-%m-%d") not in date_results:
             date_results.append(i.updatatime.strftime("%y-%m-%d"))
