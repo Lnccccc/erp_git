@@ -42,7 +42,7 @@ def Getdata(request):
         urlid = get_urlid(post_id)
     except:
         return render(request,'detail.html',context={'wrong_url':wrong_url})
-    results = keyword3.objects.filter(urlid=urlid).order_by('-keyword')[:10]
+    results = keyword3.objects.filter(urlid=urlid).order_by('-keyword')
     for i in results:
         if i.updatatime.strftime("%y-%m-%d") not in date_results:
             date_results.append(i.updatatime.strftime("%y-%m-%d"))
