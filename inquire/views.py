@@ -22,7 +22,8 @@ def Getdata(request):
         e = b.index('/'or'_')  # 获取第一个/的位置
         urlId = b[d + 1:e][::-1]  # b1就是唯一标识的ID
         return str(urlId)
-    noResult = '您所查询的数据尚未开放，想查看更多商品关键词数据，欢迎关注微信公众号：微分析，联系客服QQ:3325993794，官方q群：538014809'
+    noResult = '''您所查询的数据尚未开放，想查看更多商品关键词数据，欢迎关注微信公众号：微分析，联系客服QQ:3325993794，官方q群：538014809
+    可以复制以下示例链接查看使用效果哦：https://www.aliexpress.com/item/5XL-Plus-Size-Dress-Fashion-Women-Elegant-Sweet-Hallow-Out-Lace-Dress-Sexy-Party-Princess-Slim/32860678012.html'''
     latest_results = []
     date_results = []
     keyword_results = []
