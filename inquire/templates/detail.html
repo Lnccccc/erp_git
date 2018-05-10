@@ -24,7 +24,7 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <form class="form-inline my-2 ml-sm-5 my-lg-0" method="POST" action="{% url 'inquire:Getdata' %}">
             {% csrf_token %}
-            <input class="form-control mr-sm-2" name="id" type="text" placeholder="输入一个速卖通商品链接试试 ^_^ " aria-label="Search" style="width:700px">
+            <input class="form-control mr-sm-2" name="id" type="text" placeholder="输入一个速卖通商品链接试试 ^_^ " aria-label="Search" style="width:700px" >
             <button class="btn btn-outline-success mx-2 my-sm-0" type="submit">Search</button>
 
         </form>
@@ -32,11 +32,13 @@
     </div>
 </nav>
 <br>
+{%  load static %}
 {% if not results %}
 <div class="alert alert-primary" role="alert">
   <p>您正在使用的是免费版的速卖通商品流量词入口查询系统，仅开放了女装、手机配件、流行珠宝等二级类目</p>
     <p>如您想获取所在行业的流量词数据，欢迎联系我们的客服qq:3325883794 或加入我们的官方q群:538014809</p>
-    <p>关注我们的公众号：微分析，更多行业数据分析报告持续分析</p>
+    <p>扫描下方二维码关注我们的公众号：微分析，更多行业数据分析报告持续分析</p>
+    <img src="{% static 'inquire/qr_code.jpg' %}" alt="" width="190px" height="190px">
 </div>
 {% endif %}
 <div role="main" class="container">
@@ -86,8 +88,10 @@
 
     </table>
     {% if results %}
-        <p class="text-muted">免费版仅显示前五页共10条排名信息</p>
+    <p class="alert alert-dark"><span class="text-danger">免费版</span>仅显示<span class="text-danger">前五页</span>共10条排名信息</p>
         <p class="text-info">想查看更多商品关键词数据，欢迎联系我们的客服qq:3325883794 或加入我们的官方q群:538014809 进行咨询</p>
+        <p>扫码关注我们的公众号，获取更多速卖通行业数据分析报告资料</p>
+        <img src="{% static 'inquire/qr_code.jpg' %}" alt="" width="200" height="200">
     {% endif %}
     <br>
     <p class="text-warning text-center">{{ wrong_url }}</p>
