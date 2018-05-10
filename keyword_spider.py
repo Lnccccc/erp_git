@@ -34,14 +34,14 @@ class Keyword(object):
         self.front = 'https://www.aliexpress.com/wholesale?initiative_id=SB_20180412174003&site=glo&g=y&SearchText='
         self.behind = '&needQuery=n&page='
 
-    def get_keyword(self, filename='keyword_list/keyword_list_yoga.xls'):
+    def get_keyword(self, filename='keyword_list/keyword_list_health.xls'):
         keyword_list = []
         filename = filename
         dataframe = pd.read_excel(filename)
         for i in dataframe['关键词'].values:
             i = i.encode('utf-8').decode()
             keyword_list.append(i)
-        return keyword_list[:100] ##爬取前100个关键词
+        return keyword_list[100:] ##爬取前100个关键词
 
     def get_urlid(self, word, n,):
         id_list = []
