@@ -34,7 +34,7 @@ class Keyword(object):
         self.front = 'https://www.aliexpress.com/wholesale?initiative_id=SB_20180412174003&site=glo&g=y&SearchText='
         self.behind = '&needQuery=n&page='
 
-    def get_keyword(self, filename='keyword_list/makeup_50.xls'):
+    def get_keyword(self, filename='keyword_list/sport_50.xls'):
         keyword_list = []
         filename = filename
         dataframe = pd.read_excel(filename)
