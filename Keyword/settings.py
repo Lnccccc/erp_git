@@ -25,7 +25,9 @@ SECRET_KEY = '5!#82tka5&3r_q!1^7n*&(58c_hni1=4=rrebmshxmeq1^+0)v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'weanaly.com',
+]
 
 
 # Application definition

@@ -13,24 +13,20 @@
     }
 </style>
 <body style="padding:50px">
-
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="{% url 'inquire:index' %}">商品流量词入口查询</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <form class="form-inline my-2 ml-sm-5 my-lg-0" method="POST" action="{% url 'inquire:Getdata' %}">
+        <div class="container">
+            <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+        <form class="form-inline my-2 ml-sm-5 my-lg-0" method="POST" action="{% url 'inquire:Getdata' %}" id="urlForm">
             {% csrf_token %}
-            <input class="form-control mr-sm-2" name="id" type="text" placeholder="输入一个速卖通商品链接试试 ^_^ " aria-label="Search" style="width:700px" >
+            <textarea style="width:670px;height:190px" form="urlForm" name="id" class="form-control text-muted" >https://www.aliexpress.com/item/New-Running-Sports-Woman-Leggings-Gym-Clothing-Fitness-Tight-Yoga-Pants/32668351168.html</textarea>
             <button class="btn btn-outline-success mx-2 my-sm-0" type="submit">Search</button>
 
         </form>
-
-    </div>
-</nav>
+            </div>
+            <div class="col-md-1"></div>
+            </div>
+        </div>
 <br>
 {%  load static %}
 {% if not results %}
