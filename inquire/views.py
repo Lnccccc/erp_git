@@ -46,6 +46,7 @@ def Getdata(request):
     for i in results:
         if i.updatatime.strftime("%y-%m-%d") not in date_results:
             date_results.append(i.updatatime.strftime("%y-%m-%d"))
+    date_results.sort(reverse=True)
     for i in results:
         if i.updatatime.strftime("%y-%m-%d") == date_results[0]:
             latest_results.append(i)
