@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'weanaly.com',
+    'localhost','127.0.0.1'
 ]
 
 
@@ -80,7 +81,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         #'NAME': os.path.join(BASE_DIR, 'keyword_db_test.db'),
-        'NAME':'keyword',
+        'NAME':'weanalysis',
         'USER':'root',
         'PASSWORD':'pjq_XXX_1022',
         'HOST':'gz-cdb-3p82wwqf.sql.tencentcdb.com',

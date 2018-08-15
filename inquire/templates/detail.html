@@ -87,14 +87,16 @@
         {% endif %}
         <tbody>
         {% for keyword in results %}
+            {% for info in keyword %}
             <tr>
-                <td>{{ keyword.urlid }}</td>
-                <td>{{ keyword.keyword }}</td>
-                <td>{{ keyword.page }}</td>
-                <td>{{ keyword.rank }}</td>
-                <td>{{ keyword.updatatime | date:"Y-m-d" }}</td>
+                <td>{{ keyword.info.0 }}</td>
+                <td>{{ keyword.info.4 }}</td>
+                <td>{{ keyword.info.1 }}</td>
+                <td>{{ keyword.info.2 }}</td>
+                <td>{{ keyword.info.3 | date:"Y-m-d" }}</td>
             </tr>
             {% endfor %}
+        {% endfor %}
         </tbody>
 
     </table>
