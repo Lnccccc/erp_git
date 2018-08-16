@@ -87,16 +87,15 @@
         {% endif %}
         <tbody>
         {% for keyword in results %}
-            {% for info in keyword %}
+
             <tr>
-                <td>{{ keyword.info.0 }}</td>
-                <td>{{ keyword.info.4 }}</td>
-                <td>{{ keyword.info.1 }}</td>
-                <td>{{ keyword.info.2 }}</td>
-                <td>{{ keyword.info.3 | date:"Y-m-d" }}</td>
+                <td>{{ keyword.0 }}</td>
+                <td>{{ keyword.4 }}</td>
+                <td>{{ keyword.1 }}</td>
+                <td>{{ keyword.2 }}</td>
+                <td>{{ keyword.3 | date:"Y-m-d" }}</td>
             </tr>
             {% endfor %}
-        {% endfor %}
         </tbody>
 
     </table>

@@ -45,18 +45,17 @@ def Getdata(request):
     except:
         return render(request,'detail.html',context={'wrong_url':wrong_url})
     results = StoreGoodsKeyword.objects.filter(goodsurlid=urlid)
+
     for i in results:
         if i.hawkdate.strftime("%y-%m-%d") not in date_results:
             date_results.append(i.hawkdate.strftime("%y-%m-%d"))
     date_results.sort(reverse=True)
     for i in results:
         if i.hawkdate.strftime("%y-%m-%d") == date_results[0]:
-            info.append(i.goodsurlid)
-            info.append(i.page)
-            info.append(i.position)
-            info.append(i.hawkdate)
-            info.append(keyword_name.filter(keywordid=i.keywordid)[0].keyword_name)
-            #info.append(goods_info.filter(goodsurlid=str(i.goodsurlid))[0].goods_picture)
+            info = [i.goodsurlid,i.page,i.position,i.hawkdate,keyword_name.filter(keywordid__contains=i.keywordid)[0].keyword_name]
+
+
+        #info.append(goods_info.filter(goodsurlid=str(i.goodsurlid))[0].goods_picture)
             latest_results.append(info)
     for i in latest_results:
         if i[4] not in keyword_results:
