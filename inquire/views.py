@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from django.views.decorators.clickjacking import xframe_options_exempt
 from datetime import date
 import time
-from .models import keyword3
+from .models import StoreGoodsKeyword,StoreAllkeyword,StoreGoods
 from django.http  import HttpResponse
 import re
 from django.utils import timezone
@@ -28,7 +28,9 @@ def Getdata(request):
     date_results = []
     keyword_results = []
     wrong_url = '您输入的商品链接有误，请输入正确的速卖通商品链接'
-
+    keyword_name = StoreAllkeyword.objects
+    goods_info = StoreGoods.objects
+    info = []
     #for i in keyword3.objects.all():
         #if i.updatatime.strftime("%y-%m-%d") not in date_results:
             #date_results.append(i.updatatime.strftime("%y-%m-%d"))
@@ -42,16 +44,21 @@ def Getdata(request):
         urlid = get_urlid(post_id)
     except:
         return render(request,'detail.html',context={'wrong_url':wrong_url})
-    results = keyword3.objects.filter(urlid=urlid).order_by('-keyword')
+    results = StoreGoodsKeyword.objects.filter(goodsurlid=urlid)
+
     for i in results:
-        if i.updatatime.strftime("%y-%m-%d") not in date_results:
-            date_results.append(i.updatatime.strftime("%y-%m-%d"))
+        if i.hawkdate.strftime("%y-%m-%d") not in date_results:
+            date_results.append(i.hawkdate.strftime("%y-%m-%d"))
     date_results.sort(reverse=True)
     for i in results:
-        if i.updatatime.strftime("%y-%m-%d") == date_results[0]:
-            latest_results.append(i)
+        if i.hawkdate.strftime("%y-%m-%d") == date_results[0]:
+            info = [i.goodsurlid,i.page,i.position,i.hawkdate,keyword_name.filter(keywordid__contains=i.keywordid)[0].keyword_name]
+
+
+        #info.append(goods_info.filter(goodsurlid=str(i.goodsurlid))[0].goods_picture)
+            latest_results.append(info)
     for i in latest_results:
-        if i.keyword not in keyword_results:
+        if i[4] not in keyword_results:
             keyword_results.append(i)
 
     #for i in results:
@@ -62,5 +69,8 @@ def Getdata(request):
     else:
         return render(request, 'detail.html', context={'no_result': noResult})
 
+
+##20180816
+##排名数据、关键词、图片链接并不在同一个表里，因此查询时不好统一，需要解决
 
 
