@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<form action="" method="get">
 <table border="1">
     <tr>
     <th>等待下单</th>
@@ -14,17 +15,20 @@
     <th>生产完成</th>
     <th>等待发货</th>
     <th>发货完成</th>
+        <th>全部</th>
     </tr>
     <tr>
-        <td>{{count.0}}</td>
-        <td>{{count.1}}</td>
-        <td>{{count.2}}</td>
-        <td>{{count.3}}</td>
-        <td>{{count.4}}</td>
-        <td>{{count.5}}</td>
-        <td>{{count.6}}</td>
+        <td><a href="http://127.0.0.1:8000/status_1/">{{count.0}}</a></td>
+        <td><a href="http://127.0.0.1:8000/status_2/">{{count.1}}</a></td>
+        <td><a href="http://127.0.0.1:8000/status_3/">{{count.2}}</a></td>
+        <td><a href="http://127.0.0.1:8000/status_4/">{{count.3}}</a></td>
+        <td><a href="http://127.0.0.1:8000/status_5/">{{count.4}}</a></td>
+        <td><a href="http://127.0.0.1:8000/status_6/">{{count.5}}</a></td>
+        <td><a href="http://127.0.0.1:8000/status_7/">{{count.6}}</a></td>
+        <td><a href="http://127.0.0.1:8000/status_0/">全部</a></td>
     </tr>
 </table>
+</form>
 <form action="{% url 'work_flow:add_order' %}" method="post">
     {% csrf_token %}
     <table border="1">
@@ -50,7 +54,7 @@
             <td>{{i.ps}}</td>
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
-            <td><input type="button" value="完成"></td>
+            <td><input type="button" name="status_update" id="status_update"></a></td>
         </tr>
         {% endfor %}
         <tr>
