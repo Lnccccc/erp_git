@@ -51,9 +51,11 @@
             <td>{{i.ps}}</td>
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
-            <td><a href="/delete/{{ i.uuid }}/"><button>删除</button></a></td>
+            <td><a href="/delete/{{ i.uuid }}/"><button>删除</button></a><a href="/update/{{i.uuid}}/"><button>已完成</button></a></td>
         </tr>
         {% endfor %}
+    <form action="{% url 'work_flow:add_order' %}" method="post">
+        {% csrf_token %}
         <tr>
             <td><input type="text" name="client" id="client"></td>
             <td><input type="text" name="order_time" id="order_time"></td>
@@ -63,8 +65,9 @@
             <td><input type="text" name="ps" id="ps"></td>
             <td></td>
             <td><input type="text" name="person_incharge" id="person_incharge"></td>
+            <td><input type="submit"></input></td>
         </tr>
-
+    </form>
 </table>
     <input type="submit" name="submit" id="submit">
 </body>

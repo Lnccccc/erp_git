@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import orders_list,order_stat
-from uuid import uuid1
+from uuid import uuid4
 from django.db.models import Count
 from django.views import generic
 # Create your views here.
@@ -40,16 +40,23 @@ def add_order(request):
         _order_detail = post['order_detail']
         _ps = post['ps']
         _person_incharge = post['person_incharge']
-    ol = orders_list(uuid=uuid1(),client=_client,order_time=_order_time,sub_time=_sub_time,
+    ol = orders_list(uuid=uuid4(),client=_client,order_time=_order_time,sub_time=_sub_time,
                      order_num=_order_num,order_detail=_order_detail,
-                     ps=_ps,order_status=2,person_incharge=_person_incharge)
+                     ps=_ps,order_status=1,person_incharge=_person_incharge)
     ol.save()
     return redirect("/")
 
 def delete_order(request,uuidd):
-    result = orders_list.objects.filter(uuid=uuidd).delete()
+    orders_list.objects.filter(uuid=uuidd).delete()
+    return redirect("/")
 
-    redirect("/")
+def update_order(request,uuidd):
+    status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
+    if status_cd < 7:
+        orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1)
+        return redirect("/")
+    else:
+        return redirect("/")
 
 
 def status(request,status_cd):
