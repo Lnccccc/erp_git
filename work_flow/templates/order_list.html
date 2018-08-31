@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="" method="get">
+
 <table border="1">
     <tr>
     <th>等待下单</th>
@@ -18,20 +18,17 @@
         <th>全部</th>
     </tr>
     <tr>
-        <td><a href="http://127.0.0.1:8000/status_1/">{{count.0}}</a></td>
-        <td><a href="http://127.0.0.1:8000/status_2/">{{count.1}}</a></td>
-        <td><a href="http://127.0.0.1:8000/status_3/">{{count.2}}</a></td>
-        <td><a href="http://127.0.0.1:8000/status_4/">{{count.3}}</a></td>
-        <td><a href="http://127.0.0.1:8000/status_5/">{{count.4}}</a></td>
-        <td><a href="http://127.0.0.1:8000/status_6/">{{count.5}}</a></td>
-        <td><a href="http://127.0.0.1:8000/status_7/">{{count.6}}</a></td>
-        <td><a href="http://127.0.0.1:8000/status_0/">全部</a></td>
+        <td><a href="/status/1/">{{count.0}}</a></td>
+        <td><a href="/status/2/">{{count.1}}</a></td>
+        <td><a href="/status/3/">{{count.2}}</a></td>
+        <td><a href="/status/4/">{{count.3}}</a></td>
+        <td><a href="/status/5/">{{count.4}}</a></td>
+        <td><a href="/status/6/">{{count.5}}</a></td>
+        <td><a href="/status/7/">{{count.6}}</a></td>
+        <td><a href="/status/0/">全部</a></td>
     </tr>
 </table>
-</form>
-<form action="{% url 'work_flow:add_order' %}" method="post">
-    {% csrf_token %}
-    <table border="1">
+<table border="1">
         <tr>
             <th>客户</th>
             <th>下单时间</th>
@@ -54,7 +51,7 @@
             <td>{{i.ps}}</td>
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
-            <td><input type="button" name="status_update" id="status_update"></a></td>
+            <td><a href="/delete/{{ i.uuid }}/"><button>删除</button></a></td>
         </tr>
         {% endfor %}
         <tr>
@@ -68,9 +65,7 @@
             <td><input type="text" name="person_incharge" id="person_incharge"></td>
         </tr>
 
-    </table>
+</table>
     <input type="submit" name="submit" id="submit">
-
-</form>
 </body>
 </html>
