@@ -58,7 +58,6 @@ def update_order(request,uuidd):
     else:
         return redirect("/")
 
-
 def status(request,status_cd):
     tmp_list = []
     stat_1 = orders_list.objects.filter(order_status='1').aggregate(count_1=Count('order_status')).get('count_1')
