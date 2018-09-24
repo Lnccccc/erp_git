@@ -3,10 +3,12 @@ from .models import orders_list,order_stat
 from uuid import uuid4
 from django.db.models import Count
 from django.views import generic
+from .forms import WorkFlowForm
 # Create your views here.
 class IndexView(generic.ListView):
     template_name = 'order_list.html'
     context_object_name = 'results'
+
     def get_queryset(self):
         results = orders_list.objects.raw('select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd')
         return results
@@ -27,24 +29,30 @@ class IndexView(generic.ListView):
         tmp_list.append(stat_6)
         tmp_list.append(stat_7)
         kwargs['count'] = tmp_list
+        kwargs['form'] = WorkFlowForm()
         return super(IndexView,self).get_context_data(**kwargs)
+
 
 
 def add_order(request):
     if request.method == 'POST':
-        post = request.POST
-        _client = post['client']
-        _order_time = post['order_time']
-        _sub_time = post['sub_time']
-        _order_num = post['order_num']
-        _order_detail = post['order_detail']
-        _ps = post['ps']
-        _person_incharge = post['person_incharge']
-    ol = orders_list(uuid=uuid4(),client=_client,order_time=_order_time,sub_time=_sub_time,
-                     order_num=_order_num,order_detail=_order_detail,
-                     ps=_ps,order_status=1,person_incharge=_person_incharge)
-    ol.save()
-    return redirect("/")
+
+        form = WorkFlowForm(request.POST)
+        if  form.is_valid():
+            _client = form.cleaned_data['client']
+            _order_time = form.cleaned_data['order_time']
+            _sub_time = form.cleaned_data['sub_time']
+            _order_num = form.cleaned_data['order_num']
+            _order_detail = form.cleaned_data['order_detail']
+            _ps = form.cleaned_data['ps']
+            _person_incharge = form.cleaned_data['person_incharge']
+            ol = orders_list(uuid=uuid4(),client=_client,order_time=_order_time,sub_time=_sub_time,
+                             order_num=_order_num,order_detail=_order_detail,
+                             ps=_ps,order_status=1,person_incharge=_person_incharge)
+            ol.save()
+
+            return redirect("/")
+
 
 def delete_order(request,uuidd):
     orders_list.objects.filter(uuid=uuidd).delete()
@@ -59,6 +67,7 @@ def update_order(request,uuidd):
         return redirect("/")
 
 def status(request,status_cd):
+    forms = WorkFlowForm()
     tmp_list = []
     stat_1 = orders_list.objects.filter(order_status='1').aggregate(count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_1)
@@ -78,5 +87,5 @@ def status(request,status_cd):
         results = orders_list.objects.raw('select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d' % status_cd)
     elif status_cd == 0:
         results = orders_list.objects.raw('select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd')
-    return render(request,'order_list.html',context={"results":results,"count":tmp_list})
+    return render(request,'order_list.html',context={"results":results,"count":tmp_list,"form":forms})
 

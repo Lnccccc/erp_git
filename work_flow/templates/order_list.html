@@ -3,7 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css" />
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+    <script type="text/javascript" src="/static/admin/js/core.js"></script>
+    <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="/static/admin/js/actions.js"></script>
+    <script type="text/javascript" src="/static/ad  min/js/urlify.js"></script>
+    <script type="text/javascript" src="/static/admin/js/prepopulate.js"></script>
+    <script type="text/javascript" src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+    <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+    <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css" />
 </head>
+
 <body>
 
 <table border="1">
@@ -35,7 +51,7 @@
             <th>交货时间</th>
             <th>订单号</th>
             <th>产品规格</th>
-            <th>备注</th>
+            <th>数量</th>
             <th>订单状态</th>
             <th>负责人</th>
             <th>操作</th>
@@ -57,18 +73,17 @@
     <form action="{% url 'work_flow:add_order' %}" method="post">
         {% csrf_token %}
         <tr>
-            <td><input type="text" name="client" id="client"></td>
-            <td><input type="text" name="order_time" id="order_time"></td>
-            <td><input type="text" name="sub_time" id="sub_time"></td>
-            <td><input type="text" name="order_num" id="order_num"></td>
-            <td><input type="text" name="order_detail" id="order_detail"></td>
-            <td><input type="text" name="ps" id="ps"></td>
+            <td>{{form.client}}</td>
+            <td>{{form.order_time}}</td>
+            <td>{{form.sub_time}}</td>
+            <td>{{form.order_num}}</td>
+            <td>{{form.order_detail}}</td>
+            <td>{{form.ps}}</td>
             <td></td>
-            <td><input type="text" name="person_incharge" id="person_incharge"></td>
-            <td><input type="submit"></input></td>
+            <td>{{form.person_incharge}}</td>
+            <td><input type="submit"></td>
         </tr>
     </form>
 </table>
-    <input type="submit" name="submit" id="submit">
 </body>
 </html>
