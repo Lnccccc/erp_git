@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css" />
-    <script type="text/javascript" src="/admin/jsi18n/"></script>
-    <script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
-    <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
-    <script type="text/javascript" src="/static/admin/js/core.js"></script>
-    <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
-    <script type="text/javascript" src="/static/admin/js/actions.js"></script>
-    <script type="text/javascript" src="/static/ad  min/js/urlify.js"></script>
-    <script type="text/javascript" src="/static/admin/js/prepopulate.js"></script>
-    <script type="text/javascript" src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
-    <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
-    <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css" />
-</head>
-
-<body>
-
+{% extends "base.html" %}
+{% block content %}
+{% if request.user.is_authenticated %}
+<h1>Hi {{request.user.username}}</h1>
+{% else %}
+<h1>Please login</h1>
+{% endif %}
 <table border="1">
     <tr>
     <th>等待下单</th>
@@ -33,16 +16,29 @@
     <th>发货完成</th>
         <th>全部</th>
     </tr>
+    {%  if request.user.is_authenticated %}
     <tr>
-        <td><a href="/status/1/">{{count.0}}</a></td>
-        <td><a href="/status/2/">{{count.1}}</a></td>
-        <td><a href="/status/3/">{{count.2}}</a></td>
-        <td><a href="/status/4/">{{count.3}}</a></td>
-        <td><a href="/status/5/">{{count.4}}</a></td>
-        <td><a href="/status/6/">{{count.5}}</a></td>
-        <td><a href="/status/7/">{{count.6}}</a></td>
-        <td><a href="/status/0/">全部</a></td>
+        <td><a href="/flow/status/1/">{{count.0}}</a></td>
+        <td><a href="/flow/status/2/">{{count.1}}</a></td>
+        <td><a href="/flow/status/3/">{{count.2}}</a></td>
+        <td><a href="/flow/status/4/">{{count.3}}</a></td>
+        <td><a href="/flow/status/5/">{{count.4}}</a></td>
+        <td><a href="/flow/status/6/">{{count.5}}</a></td>
+        <td><a href="/flow/status/7/">{{count.6}}</a></td>
+        <td><a href="/flow/status/0/">全部</a></td>
     </tr>
+    {% else %}
+    <tr>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>全部</td>
+    </tr>
+    {% endif %}
 </table>
 <table border="1">
         <tr>
@@ -57,6 +53,7 @@
             <th>操作</th>
         </tr>
         <br>
+        {% if request.user.is_authenticated %}
         {% for i in results %}
         <tr>
             <td>{{i.client}}</td>
@@ -67,9 +64,13 @@
             <td>{{i.ps}}</td>
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
-            <td><a href="/delete/{{ i.uuid }}/"><button>删除</button></a><a href="/update/{{i.uuid}}/"><button>已完成</button></a></td>
+            <td><a href="/flow/delete/{{ i.uuid }}/"><button>删除</button></a>
+                <a href="/flow/update/{{i.uuid}}/"><button>已完成</button></a>
+                <a href="/flow/rollback/{{ i.uuid }}"><button>回退</button></a>
+            </td>
         </tr>
         {% endfor %}
+        {% endif %}
     <form action="{% url 'work_flow:add_order' %}" method="post">
         {% csrf_token %}
         <tr>
@@ -85,5 +86,4 @@
         </tr>
     </form>
 </table>
-</body>
-</html>
+{% endblock %}

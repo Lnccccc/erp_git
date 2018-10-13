@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+
+def i18n_javascript(request):
+    return admin.site.i18n_javascript(request)
 urlpatterns = [
+    path('admin/jsi18n',i18n_javascript),
     path('admin/', admin.site.urls),
-    path('',include('work_flow.urls'))
+    path('flow/',include('work_flow.urls',namespace='flow')),
+    path('account/',include('account.urls',namespace='account')),
 ]

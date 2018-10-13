@@ -1,0 +1,67 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css" />
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+    <script type="text/javascript" src="/static/admin/js/core.js"></script>
+    <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="/static/admin/js/actions.js"></script>
+    <script type="text/javascript" src="/static/admin/js/urlify.js"></script>
+    <script type="text/javascript" src="/static/admin/js/prepopulate.js"></script>
+    <script type="text/javascript" src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+    <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+    <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css" />
+</head>
+
+<body>
+<div id="header">
+    <a href="{% url 'work_flow:index' %}"><span class="logo">流程管理</span></a>
+    {% if request.user.is_authenticated %}
+        <ul class="menu">
+            {% if section == "dashboard" %}
+            <li class="selected">{% endif %}
+            <a href="{% url 'account:dashboard' %}">My dashboard</a>
+            </li>
+            {% if section == "images" %}
+            <li class="selected" >{% endif %}
+            <a href="#">Images</a>
+            </li>
+            {% if section == "people" %}
+            <li class="selected" >{% endif %}
+                <a href="#">People</a>
+            </li>
+        </ul>
+        {% endif %}
+    <span class="user">
+        {% if request.user.is_authenticated %}
+        Hello ,{{ request.user.username }}
+        <a href="{% url 'account:logout' %}">注销</a>
+        {% else %}
+        <a href="{% url 'account:login' %}">登陆</a>
+        {% endif %}
+    </span>
+</div>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">
+        {{ message|safe }}
+        <a href="#" class="close"></a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>
