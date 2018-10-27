@@ -87,29 +87,33 @@ def delete_order(request,uuidd):
 def update_order(request,uuidd):
     status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
     per = request.user.profile.dept
-    if status_cd < 7:
-        if per == '总经理' and status_cd <7:
-            orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1)
-            messages.success(request,"操作成功")
-            return redirect("/flow/")
-        elif per == '厂长' and status_cd == 2 or status_cd ==3:
-            orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1)
-            messages.success(request,"操作成功")
-            return redirect("/flow/")
-        elif per == '生产主管' and status_cd == 4 or status_cd == 5:
-            orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1)
-            messages.success(request,"操作成功")
-            return redirect("/flow/")
-        elif per == '仓管' and status_cd == 6 or status_cd == 7:
-            orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1)
-            messages.success(request,"操作成功")
-            return redirect("/flow/")
+    if request.method == 'POST':
+        next_node = request.POST.get('next_node')
+        if status_cd < 7:
+            if per == '总经理' and status_cd <7:
+                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1,person_incharge=next_node)
+                messages.success(request,"操作成功")
+                return redirect("/flow/")
+            elif per == '厂长' and status_cd == 2 or status_cd ==3:
+                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1,person_incharge=next_node)
+                messages.success(request,"操作成功")
+                return redirect("/flow/")
+            elif per == '生产主管' and status_cd == 4 or status_cd == 5:
+                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1,person_incharge=next_node)
+                messages.success(request,"操作成功")
+                return redirect("/flow/")
+            elif per == '仓管' and status_cd == 6 or status_cd == 7:
+                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1,person_incharge=next_node)
+                messages.success(request,"操作成功")
+                return redirect("/flow/")
+            else:
+                messages.error(request,per+str(status_cd)+'操作失败：你没有相应的权限，请联系总经理')
+                return redirect("/flow/")
         else:
-            messages.error(request,per+str(status_cd)+'操作失败：你没有相应的权限，请联系总经理')
+            messages.warning(request,"该订单已完成")
             return redirect("/flow/")
     else:
-        messages.warning(request,"该订单已完成")
-        return redirect("/flow/")
+        pass
 
 def roll_back(request,uuidd):
     status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status

@@ -49,7 +49,8 @@
             <th>产品规格</th>
             <th>数量</th>
             <th>订单状态</th>
-            <th>负责人</th>
+            <th>当前负责人</th>
+            <th>下一阶段负责人</th>
             <th>操作</th>
         </tr>
         <br>
@@ -64,10 +65,16 @@
             <td>{{i.ps}}</td>
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
-            <td><a href="/flow/delete/{{ i.uuid }}/"><button>删除</button></a>
-                <a href="/flow/update/{{i.uuid}}/"><button>已完成</button></a>
+            <form action="{% url 'work_flow:update' i.uuid %}" method="POST">
+                {% csrf_token %}
+            <td><input type="text" name="next_node" ></td>
+            <td>
+                <input type="submit" value="已完成">
+            </form>
+                <a href="/flow/delete/{{ i.uuid }}/"><button>删除</button></a>
                 <a href="/flow/rollback/{{ i.uuid }}"><button>回退</button></a>
             </td>
+
         </tr>
         {% endfor %}
         {% endif %}
@@ -80,6 +87,7 @@
             <td>{{form.order_num}}</td>
             <td>{{form.order_detail}}</td>
             <td>{{form.ps}}</td>
+            <td></td>
             <td></td>
             <td>{{form.person_incharge}}</td>
             <td><input type="submit"></td>
