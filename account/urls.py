@@ -20,6 +20,5 @@ urlpatterns = [
     path('edit/',views.edit,name='edit'),
     path('people-edit/',views.edit_2,name='edit_2'),
     path('people-edit/<str:usr_name>',views.update_per,name='update_per'),
-
-
+    path('weixin/',views.weixin,name='weixin'),
 ]

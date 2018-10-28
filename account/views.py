@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Profile
 from django.contrib import messages
+import hashlib
 @login_required
 def dashboard(request):
     return render(request,'account/dashboard.html',{'section':'dashboard'})
@@ -107,3 +108,17 @@ def update_per(request,usr_name):
     else:
         return render(request,'account/edit_2.html',context={'search_form':search_form})
 
+
+def weixin(request):
+    signature = request.GET.get('signature')
+    timestamp = request.GET.get('timestamp')
+    nonce = request.GET.get('nonce')
+    token = 'xincheng'
+    tmpraw = [token,timestamp,nonce]
+    raw = ("").join(sorted(tmpraw))
+    hash_raw_tmp = hashlib.sha1(bytes(raw,encoding='utf-8'))
+    hash_raw = hash_raw_tmp.hexidgest()
+    if hash_raw == signature:
+        return HttpResponse(nonce)
+    else:
+        return False
