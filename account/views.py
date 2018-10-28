@@ -117,7 +117,7 @@ def weixin(request):
     tmpraw = [token,timestamp,nonce]
     raw = ("").join(sorted(tmpraw))
     hash_raw_tmp = hashlib.sha1(bytes(raw,encoding='utf-8'))
-    hash_raw = hash_raw_tmp.hexidgest()
+    hash_raw = hash_raw_tmp.hexdigest()
     if hash_raw == signature:
         return HttpResponse(nonce)
     else:
