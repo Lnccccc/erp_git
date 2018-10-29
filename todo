@@ -26,13 +26,15 @@
 
 20181027
 计划新增内容：
-1、非本公司员工查找时无法看到公司名
+1、非本公司员工查找时无法看到公司名 已完成(10.28)
 2、重写前端页面
 3、重写首页
 4、重写未登陆时的页面
 5、新增订单详细表单，展示时用简略表单
+6、企业人员管理，总经理可见本公司全部员工信息
+7、选择下一阶段负责人时只能选择本公司员工 已完成(10.29)
 
-https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxec4567a41338530d&redirect_uri=https://47.109.119.21/flow/&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+http://open.weixin.qq.com/connect/oauth2/authorize?appid=wxec4567a41338530d&redirect_uri=47.107.119.21/account/weixin/&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
 
 https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxec4567a41338530d&secret=f81a45edfb0ebb4607c8441fac0876d9
 

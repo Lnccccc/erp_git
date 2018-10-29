@@ -54,7 +54,11 @@
     </div>
 
     <span><h4>公司：</h4></span>
+    {% if i.company == request.user.profile.company %}
     <input type="text" value="{{ i.company }}" name="com">
+    {% else %}
+    <input type="text" value="*****" name="com">
+    {% endif %}
     <input type="submit" name="" id="sub" value="确认修改">
 </form>
 

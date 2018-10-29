@@ -113,12 +113,13 @@ def weixin(request):
     signature = request.GET.get('signature')
     timestamp = request.GET.get('timestamp')
     nonce = request.GET.get('nonce')
+    echostr = request.GET.get('echostr')
     token = 'xincheng'
     tmpraw = [token,timestamp,nonce]
     raw = ("").join(sorted(tmpraw))
     hash_raw_tmp = hashlib.sha1(bytes(raw,encoding='utf-8'))
     hash_raw = hash_raw_tmp.hexdigest()
     if hash_raw == signature:
-        return HttpResponse(nonce)
+        return HttpResponse(echostr)
     else:
         return False

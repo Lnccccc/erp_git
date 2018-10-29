@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import orders_list,order_stat
+from account.models import Profile
 from uuid import uuid4
 from django.db.models import Count
 from django.views import generic
@@ -18,6 +19,7 @@ class IndexView(generic.ListView):
     def get_context_data(self,  **kwargs):
         user_name = self.request.user.username
         tmp_list = []
+        memb_list = []
         stat_1 = orders_list.objects.filter(order_status='1',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_1)
         stat_2 = orders_list.objects.filter(order_status='2',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
@@ -32,8 +34,13 @@ class IndexView(generic.ListView):
         tmp_list.append(stat_5)
         tmp_list.append(stat_6)
         tmp_list.append(stat_7)
+        company = self.request.user.profile.company
+        membs = Profile.objects.filter(company=company)
+        for i in membs:
+            memb_list.append(i.user.username)
         kwargs['count'] = tmp_list
         kwargs['form'] = WorkFlowForm()
+        kwargs['memb'] = memb_list
         return super(IndexView,self).get_context_data(**kwargs)
 @login_required
 def add_order(request):
