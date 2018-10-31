@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from .models import Profile
 from django.contrib import messages
 import hashlib
+import requests
+re = requests
 @login_required
 def dashboard(request):
     return render(request,'account/dashboard.html',{'section':'dashboard'})
@@ -123,3 +125,13 @@ def weixin(request):
         return HttpResponse(echostr)
     else:
         return False
+
+def get_code(request,code):
+    cd = code
+    appid = 'wxf6d9517d8a850ecd'
+    secret = '177546a750a8c8d12e45f94f39c18a61'
+    url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % appid,secret,cd
+    req = re.get(url).json()
+    ass_tok = req['access_token']
+    open_id = req['openid']
+    return HttpResponse(open_id)

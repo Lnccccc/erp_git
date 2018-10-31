@@ -34,7 +34,11 @@
 6、企业人员管理，总经理可见本公司全部员工信息
 7、选择下一阶段负责人时只能选择本公司员工 已完成(10.29)
 
-http://open.weixin.qq.com/connect/oauth2/authorize?appid=wxec4567a41338530d&redirect_uri=47.107.119.21/account/weixin/&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+http://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf6d9517d8a850ecd&redirect_uri=https%3A%2F%2F47.107.119.21%2Faccount%2F&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+
+http://open.weixin.qq.com/connect/qrconnect?appid=wxf6d9517d8a850ecd&redirect_uri=https%3A%2F%2F47.107.119.21%2Fflow%2F&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+
+
 
 https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxec4567a41338530d&secret=f81a45edfb0ebb4607c8441fac0876d9
 
