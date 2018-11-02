@@ -8,6 +8,7 @@ from .models import Profile
 from django.contrib import messages
 import hashlib
 import requests
+import json
 re = requests
 @login_required
 def dashboard(request):
@@ -110,28 +111,38 @@ def update_per(request,usr_name):
     else:
         return render(request,'account/edit_2.html',context={'search_form':search_form})
 
+class WeiXin():
+    def __init__(self):
+        self.appid='wxf6d9517d8a850ecd'
+        self.secret = '177546a750a8c8d12e45f94f39c18a61'
 
-def weixin(request):
-    signature = request.GET.get('signature')
-    timestamp = request.GET.get('timestamp')
-    nonce = request.GET.get('nonce')
-    echostr = request.GET.get('echostr')
-    token = 'xincheng'
-    tmpraw = [token,timestamp,nonce]
-    raw = ("").join(sorted(tmpraw))
-    hash_raw_tmp = hashlib.sha1(bytes(raw,encoding='utf-8'))
-    hash_raw = hash_raw_tmp.hexdigest()
-    if hash_raw == signature:
-        return HttpResponse(echostr)
-    else:
-        return False
 
-def get_code(request,code):
-    cd = code
-    appid = 'wxf6d9517d8a850ecd'
-    secret = '177546a750a8c8d12e45f94f39c18a61'
-    url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % appid,secret,cd
-    req = re.get(url).json()
-    ass_tok = req['access_token']
-    open_id = req['openid']
-    return HttpResponse(open_id)
+    def weixin(self,request):
+        self.signature = request.GET.get('signature')
+        self.timestamp = request.GET.get('timestamp')
+        self.nonce = request.GET.get('nonce')
+        self.echostr = request.GET.get('echostr')
+        self.token = 'xincheng'
+        self.tmpraw = [self.token,self.timestamp,self.nonce]
+        self.raw = ("").join(sorted(self.tmpraw))
+        self.hash_raw_tmp = hashlib.sha1(bytes(self.raw,encoding='utf-8'))
+        self.hash_raw = self.hash_raw_tmp.hexdigest()
+        if self.hash_raw == self.signature:
+            return HttpResponse(self.echostr)
+        else:
+            return False
+
+    def get_usr_info(self,request):
+        self.cd = request.GET.get('code')
+        self.url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % (self.appid,self.secret,self.cd)
+        self.raw = re.get(self.url).json()
+        ass_tok = self.raw['access_token']
+        open_id = self.raw['openid']
+        self.usr_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%d&lang=zh_CN' % (ass_tok,open_id)
+        self.info_raw = re.get(self.usr_url).json()
+        self.nickname = self.info_raw['nickname']
+        self.city = self.info_raw['city']
+        self.sex = self.info_raw['sex']
+        return HttpResponse(self.info_raw)
+
+

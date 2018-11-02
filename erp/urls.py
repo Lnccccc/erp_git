@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
 def i18n_javascript(request):
     return admin.site.i18n_javascript(request)
 urlpatterns = [

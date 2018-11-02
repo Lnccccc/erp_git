@@ -1,9 +1,11 @@
 from django.urls import path
 from . import views
+from .views import WeiXin
 from django.contrib.auth.views import login,logout,logout_then_login
 from django.contrib.auth.views import password_change_done,password_change,password_reset,password_reset_done,password_reset_complete,password_reset_confirm
 app_name='account'
 handler403 = views.permission_denied
+wx = WeiXin()
 urlpatterns = [
     #path("login/",views.user_login,name='user_login')
     path('login/',login,name='login'),
@@ -15,11 +17,10 @@ urlpatterns = [
     path('password-reset-done/',password_reset_done,name='password_reset_done'),
     path('password-reset-complete/',password_reset_complete,name='password_reset_compelete'),
     path('password-reset-confirm/',password_reset_confirm,name='password_reset_comfirm'),
-    path('',views.dashboard,name='dashboard'),
     path('register/',views.register,name='register'),
     path('edit/',views.edit,name='edit'),
     path('people-edit/',views.edit_2,name='edit_2'),
     path('people-edit/<str:usr_name>',views.update_per,name='update_per'),
-    path('weixin/',views.weixin,name='weixin'),
-    path('<code>',views.get_code,name='get_code'),
+    path('weixin/',wx.weixin,name='weixin'),
+    path('',wx.get_usr_info,name='get_usr_info'),
 ]
