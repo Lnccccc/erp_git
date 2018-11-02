@@ -8,6 +8,7 @@ from .models import Profile
 from django.contrib import messages
 import hashlib
 import requests
+from .models import WeixinUser
 import json
 re = requests
 @login_required
@@ -115,6 +116,15 @@ class WeiXin():
     def __init__(self):
         self.appid='wxf6d9517d8a850ecd'
         self.secret = '177546a750a8c8d12e45f94f39c18a61'
+        self.all_user = []
+    def get_all_user(self):
+        for i in WeixinUser.objects.all():
+            self.all_user.append(i.openid)
+        return self.all_user
+
+    def get_token(self):
+        self.raw = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (self.appid,self.secret)
+        token=re.get(self.raw).json()['access_token']
 
 
     def weixin(self,request):
@@ -138,11 +148,16 @@ class WeiXin():
         self.raw = re.get(self.url).json()
         ass_tok = self.raw['access_token']
         open_id = self.raw['openid']
-        self.usr_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%d&lang=zh_CN' % (ass_tok,open_id)
+        self.usr_url = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN' % (ass_tok,open_id)
         self.info_raw = re.get(self.usr_url).json()
         self.nickname = self.info_raw['nickname']
         self.city = self.info_raw['city']
         self.sex = self.info_raw['sex']
-        return HttpResponse(self.info_raw)
-
+        self.all_user = self.get_all_user()
+        if open_id in self.all_user:
+            return redirect("/flow/")
+        else:
+            wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)
+            wxu.save()
+            return redirect("/account/login")
 
