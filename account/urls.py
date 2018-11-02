@@ -22,5 +22,5 @@ urlpatterns = [
     path('people-edit/',views.edit_2,name='edit_2'),
     path('people-edit/<str:usr_name>',views.update_per,name='update_per'),
     path('weixin/',wx.weixin,name='weixin'),
-    path('',wx.get_usr_info,name='get_usr_info'),
+    path('',wx.get_usr,name='get_usr'),
 ]

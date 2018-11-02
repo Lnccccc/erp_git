@@ -9,6 +9,7 @@ from django.contrib import messages
 import hashlib
 import requests
 from .models import WeixinUser
+
 import json
 re = requests
 @login_required
@@ -142,7 +143,7 @@ class WeiXin():
         else:
             return False
 
-    def get_usr_info(self,request):
+    def get_usr(self,request):
         self.cd = request.GET.get('code')
         self.url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % (self.appid,self.secret,self.cd)
         self.raw = re.get(self.url).json()
@@ -155,9 +156,16 @@ class WeiXin():
         self.sex = self.info_raw['sex']
         self.all_user = self.get_all_user()
         if open_id in self.all_user:
-            return redirect("/flow/")
+            request.session['islogin'] = True
+            request.session['openid'] = open_id
+            request.session['nickname'] = self.nickname
+            self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
+            request.session['dept'] = self.wx_user.user.dept
+            request.session['company'] = self.wx_user.user.company
+            return HttpResponse('登陆成功')
         else:
             wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)
             wxu.save()
-            return redirect("/account/login")
+            Profile.objects.create(user=wxu)
+            return HttpResponse('注册成功')
 
