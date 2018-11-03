@@ -165,8 +165,9 @@ class WeiXin():
             request.session['openid'] = open_id
             request.session['nickname'] = self.nickname
             self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
-            request.session['dept'] = self.wx_user.user.dept
-            request.session['company'] = self.wx_user.user.company
+            request.session['dept'] = self.wx_user.profile.dept
+            request.session['company'] = self.wx_user.profile.company
+	    #idd = request.session.get('openid')
             return redirect('/flow/')
         else:
             wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)

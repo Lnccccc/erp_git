@@ -22,7 +22,7 @@ class IndexView(generic.ListView):
         results = orders_list.objects.raw("select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.openid = '%s' " % openid)
         return results
     def get_context_data(self,  **kwargs):
-        user_name = self.request.user.username
+        
         openid = self.request.session.get('openid','null')
         tmp_list = []
         memb_list = []
@@ -44,7 +44,7 @@ class IndexView(generic.ListView):
         company = wxu.profile.company
         membs = Profile.objects.filter(company=company)
         for i in membs:
-            memb_list.append(i.user.username)
+            memb_list.append(i.user.nickname)
         kwargs['count'] = tmp_list
         kwargs['form'] = WorkFlowForm()
         kwargs['memb'] = memb_list
