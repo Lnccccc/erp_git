@@ -16,13 +16,15 @@ def islogin(request):
 class IndexView(generic.ListView):
     template_name = 'order_list.html'
     context_object_name = 'results'
+    def __init__(self):
+        self._islogin = islogin(self.request)
 
     def get_queryset(self):
         openid = self.request.session.get('openid','null')
         results = orders_list.objects.raw("select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.openid = '%s' " % openid)
         return results
     def get_context_data(self,  **kwargs):
-        
+        user = {'nickname':self.request.session.get('nickname')}
         openid = self.request.session.get('openid','null')
         tmp_list = []
         memb_list = []
@@ -48,6 +50,8 @@ class IndexView(generic.ListView):
         kwargs['count'] = tmp_list
         kwargs['form'] = WorkFlowForm()
         kwargs['memb'] = memb_list
+        kwargs['islogin'] = self._islogin
+        kwargs['user'] = user
         return super(IndexView,self).get_context_data(**kwargs)
 @login_required
 def add_order(request):
