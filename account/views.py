@@ -167,7 +167,7 @@ class WeiXin():
             self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
             request.session['dept'] = self.wx_user.user.dept
             request.session['company'] = self.wx_user.user.company
-            return HttpResponse('登陆成功')
+            return redirect('/flow/')
         else:
             wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)
             wxu.save()

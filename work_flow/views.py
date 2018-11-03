@@ -7,37 +7,41 @@ from django.views import generic
 from .forms import WorkFlowForm
 from django.contrib.auth.decorators import login_required,permission_required
 from django.contrib import messages
+from account.models import WeixinUser
 # Create your views here.
 
 def islogin(request):
     return request.session.get('islogin',False)
+
 class IndexView(generic.ListView):
     template_name = 'order_list.html'
     context_object_name = 'results'
 
     def get_queryset(self):
-        user_name = self.request.user.username
-        results = orders_list.objects.raw("select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.user_name = '%s' " % user_name)
+        openid = self.request.session.get('openid','null')
+        results = orders_list.objects.raw("select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.openid = '%s' " % openid)
         return results
     def get_context_data(self,  **kwargs):
         user_name = self.request.user.username
+        openid = self.request.session.get('openid','null')
         tmp_list = []
         memb_list = []
-        stat_1 = orders_list.objects.filter(order_status='1',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_1 = orders_list.objects.filter(order_status='1',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_1)
-        stat_2 = orders_list.objects.filter(order_status='2',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_2 = orders_list.objects.filter(order_status='2',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_2)
-        stat_3 = orders_list.objects.filter(order_status='3',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_3 = orders_list.objects.filter(order_status='3',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_3)
-        stat_4 = orders_list.objects.filter(order_status='4',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_4 = orders_list.objects.filter(order_status='4',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_4)
-        stat_5 = orders_list.objects.filter(order_status='5',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
-        stat_6 = orders_list.objects.filter(order_status='6',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
-        stat_7 = orders_list.objects.filter(order_status='7',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_5 = orders_list.objects.filter(order_status='5',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_6 = orders_list.objects.filter(order_status='6',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_7 = orders_list.objects.filter(order_status='7',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_5)
         tmp_list.append(stat_6)
         tmp_list.append(stat_7)
-        company = self.request.user.profile.company
+        wxu = WeixinUser.objects.filter(openid=openid)[0]
+        company = wxu.profile.company
         membs = Profile.objects.filter(company=company)
         for i in membs:
             memb_list.append(i.user.username)

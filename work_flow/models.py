@@ -3,6 +3,7 @@ from django.contrib.admin import widgets
 # Create your models here.
 
 class orders_list(models.Model):
+    openid = models.CharField(max_length=256,null=True)
     user_name = models.CharField(max_length=200,null=True)
     uuid = models.CharField(max_length=200,null=True)
     client = models.CharField(max_length=200,null=True)
