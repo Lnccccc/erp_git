@@ -9,9 +9,12 @@ from django.contrib import messages
 import hashlib
 import requests
 from .models import WeixinUser
-
 import json
 re = requests
+
+def is_login(self,request):
+    return request.session.get('islogin',False)
+
 @login_required
 def dashboard(request):
     return render(request,'account/dashboard.html',{'section':'dashboard'})
@@ -118,6 +121,7 @@ class WeiXin():
         self.appid='wxf6d9517d8a850ecd'
         self.secret = '177546a750a8c8d12e45f94f39c18a61'
         self.all_user = []
+
     def get_all_user(self):
         for i in WeixinUser.objects.all():
             self.all_user.append(i.openid)
@@ -143,6 +147,7 @@ class WeiXin():
         else:
             return False
 
+
     def get_usr(self,request):
         self.cd = request.GET.get('code')
         self.url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % (self.appid,self.secret,self.cd)
@@ -167,5 +172,6 @@ class WeiXin():
             wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)
             wxu.save()
             Profile.objects.create(user=wxu)
+            request.session['islogin'] = True
             return HttpResponse('注册成功')
 

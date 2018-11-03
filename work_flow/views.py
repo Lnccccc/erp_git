@@ -8,6 +8,9 @@ from .forms import WorkFlowForm
 from django.contrib.auth.decorators import login_required,permission_required
 from django.contrib import messages
 # Create your views here.
+
+def islogin(request):
+    return request.session.get('islogin',False)
 class IndexView(generic.ListView):
     template_name = 'order_list.html'
     context_object_name = 'results'
