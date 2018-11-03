@@ -16,8 +16,6 @@ def islogin(request):
 class IndexView(generic.ListView):
     template_name = 'order_list.html'
     context_object_name = 'results'
-    def __init__(self):
-        self._islogin = islogin(self.request)
 
     def get_queryset(self):
         openid = self.request.session.get('openid','null')
