@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-{% if islogin %}
-<h1>您好 ,{{ user.nickname }}</h1>
+{% if request.session.islogin %}
+<h1>您好 ,{{ request.session.nickname }}</h1>
 {% else %}
 <h1>Please login</h1>
 {% endif %}
@@ -16,7 +16,7 @@
     <th>发货完成</th>
         <th>全部</th>
     </tr>
-    {% if islogin %}
+    {% if request.session.islogin %}
     <tr>
         <td><a href="/flow/status/1/">{{count.0}}</a></td>
         <td><a href="/flow/status/2/">{{count.1}}</a></td>
@@ -54,7 +54,7 @@
             <th>操作</th>
         </tr>
         <br>
-        {% if islogin %}
+        {% if request.session.islogin %}
         {% for i in results %}
         <tr>
             <td>{{i.client}}</td>

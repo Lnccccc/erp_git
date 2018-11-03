@@ -24,7 +24,7 @@
 <body>
 <div id="header">
     <a href="{% url 'work_flow:index' %}"><span class="logo">{{ request.user.profile.company }} 订单流程管理系统</span></a>
-    {% if request.user.is_authenticated %}
+    {% if islogin %}
         <ul class="menu">
             <li>
             <a href="{% url 'work_flow:index' %}">生产情况</a>
