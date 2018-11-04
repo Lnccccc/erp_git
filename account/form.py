@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile,WeixinUser
 
 class LoginForm(forms.Form):
     username= forms.CharField()
@@ -19,23 +19,17 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Passwords don't match")
         return cd['password2']
 
-
-class UserEditForm(forms.ModelForm):
+class WxUserEditForm(forms.ModelForm):
     class Meta:
-        model=User
-        fields = ('first_name','last_name','email',)
-
-class UserEditForm2(forms.ModelForm):
-    class Meta:
-        model=User
-        fields = ('username',)
+        fields = WeixinUser
+        fields=('nickname',)
 
 
 class ProfileEditForm(forms.ModelForm):
 
     class Meta:
         model=Profile
-        fields=('company','dept',)
+        fields=('company','real_name')
 
 
 class SearchForm(forms.Form):
