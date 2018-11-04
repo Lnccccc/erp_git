@@ -49,7 +49,6 @@ def register(request):
         user_form = UserRegistrationForm()
     return render(request,'account/register.html',context={'user_form':user_form})
 
-@login_required
 def edit(request):
     wxu = WeixinUser.objects.get(openid=request.session.get('openid','null'))
     profile = wxu.profile
@@ -62,15 +61,16 @@ def edit(request):
             messages.success(request,'Profile update successfully')
         else:
             messages.error(request,'Error updating your profile')
+        return redirect('/flow/')
     else:
-        profile_form = ProfileEditForm(instance=profile)
-    return redirect('/flow/')
+        profile_form = ProfileEditForm()
+        return render(request,'account/edit.html',context={'profile_form':profile_form})
+
 
 def permission_denied(request):
     messages.error(request,'操作失败')
     return render(request,'order_list.html')
 
-@login_required
 def edit_2(request):
     search_form = SearchForm()
     if request.user.profile.dept == '总经理':
@@ -91,7 +91,6 @@ def edit_2(request):
         messages.warning(request,"你没有权限")
         return redirect("/flow/")
 
-@login_required
 def update_per(request,usr_name):
     search_form = SearchForm()
     if request.user.profile.dept == '总经理':
