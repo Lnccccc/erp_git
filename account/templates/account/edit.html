@@ -4,8 +4,8 @@
 <h1>Edit your profile</h1>
 <p>You can edit your account using the following forms:</p>
 <form action="." method="POST" enctype="multipart/form-data" role='form'>
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
+    {{ user_form.as_table }}
+    {{ profile_form.as_table }}
     {% csrf_token %}
     <p><input class="btn btn-default" type="submit" value="Svae changes" ></p>
 
