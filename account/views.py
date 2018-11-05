@@ -172,5 +172,8 @@ class WeiXin():
             wxu.save()
             Profile.objects.create(user=wxu)
             request.session['islogin'] = True
+            request.session['openid'] = open_id
+            request.session['nickname'] = self.nickname
+            
             return redirect('account/edit/') ##初次登陆时没有设置session因此在edit页面无法获取session的openid等内容
 
