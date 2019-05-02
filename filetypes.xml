@@ -3,6 +3,7 @@
     <extensionMap>
       <mapping pattern="set" type="JSON" />
       <mapping pattern="todo" type="PLAIN_TEXT" />
+      <mapping pattern="sg90_test2" type="Python" />
       <mapping pattern="sql" type="SQL" />
     </extensionMap>
   </component>
